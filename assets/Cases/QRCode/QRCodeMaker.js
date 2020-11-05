@@ -12,16 +12,13 @@ cc.Class({
             tooltip: '二维码图案颜色'
         },
 
-        _margin: 0, //距离边界宽度
-        _qrcodeStr: '', //二维码字符串内容
+        margin: 0, //距离边界宽度
+        qrcodeStr: '', //二维码字符串内容
     },
 
     onLoad() {
-        this._margin = 0;
-        this._qrcodeStr = 'www.baidu.com';
-        
         this.graphics = this.node.getComponent(cc.Graphics);
-        if (this._qrcodeStr && this.graphics) {
+        if (this.qrcodeStr && this.graphics) {
             this.initQrcode();
             this.node.x = this.node.x - this.node.width / 2;
             this.node.y = this.node.y - this.node.height / 2;
@@ -29,8 +26,8 @@ cc.Class({
     },
 
     initQrcode() {
-        if (typeof (this._qrcodeStr) !== 'string') {
-            console.log('_qrcodeStr is not string', this._qrcodeStr);
+        if (typeof (this.qrcodeStr) !== 'string') {
+            console.log('qrcodeStr is not string', this.qrcodeStr);
             return;
         }
 
@@ -40,10 +37,10 @@ cc.Class({
         this.graphics.fillRect(0, 0, width, width);
         this.graphics.close();
         let qrcode = new QRCode(-1, 2);
-        qrcode.addData(this._qrcodeStr);
+        qrcode.addData(this.qrcodeStr);
         qrcode.make();
         this.graphics.fillColor = this.fillColor;
-        let size = width - this._margin * 2;
+        let size = width - this.margin * 2;
         let num = qrcode.getModuleCount();
         let tileW = size / num;
         let tileH = size / num;
@@ -52,7 +49,7 @@ cc.Class({
         for (let row = 0; row < num; row++) {
             for (let col = 0; col < num; col++) {
                 if (qrcode.isDark(row, col)) {
-                    this.graphics.fillRect(this._margin + col * tileW, size - tileH - Math.round(row * tileH) + this._margin, w, h);
+                    this.graphics.fillRect(this.margin + col * tileW, size - tileH - Math.round(row * tileH) + this.margin, w, h);
                 }
             }
         }
